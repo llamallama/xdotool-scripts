@@ -1,0 +1,5 @@
+#!/bin/bash
+
+offset=26
+
+xdotool mousemove_relative 0 $offset && xdotool keydown --clearmodifiers ctrl && xdotool click 1 && xdotool --clearmodifiers keyup ctrl

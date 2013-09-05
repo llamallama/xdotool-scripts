@@ -1,0 +1,121 @@
+#!/bin/bash
+
+wid=$(xdotool search --name "Vimperator" | head -1)
+eval $(xdotool getwindowgeometry --shell $wid)
+
+if [[ "${1}" == "out" ]]
+then
+  clockInClockOutButtonDistance=0
+elif [[ "${1}" == "in" ]]
+then
+  clockInClockOutButtonDistance=100
+else
+  echo "Specify in or out."
+  exit 1
+fi
+
+timeAttendanceButtonOffsetX=105
+timeAttendanceButtonOffsetY=90
+
+timecardButtonOffsetY=30
+
+clockOutButtonOffsetX=30
+clockOutButtonOffsetY=356
+
+logOutButtonOffsetX=47
+logOutButtonOffsetY=45
+
+clockInOutButtonX=$(($X + $(($WIDTH / 2)) - $clockOutButtonOffsetX - $clockInClockOutButtonDistance))
+clockInOutButtonY=$(($Y + $clockOutButtonOffsetY))
+
+timeAttendanceButtonX=$(($X + $timeAttendanceButtonOffsetX))
+timeAttendanceButtonY=$(($Y + $timeAttendanceButtonOffsetY))
+
+timecardButtonY=$(($timeAttendanceButtonY + timecardButtonOffsetY))
+
+logOutButtonX=$(($X + $WIDTH - $logOutButtonOffsetX))
+logOutButtonY=$(($Y + $logOutButtonOffsetY))
+
+if [[ "${2}" == "remote" ]]
+then
+  killall xscreensaver
+fi
+
+sleep 0.35
+# Go to firefox, open a new tab, go to the address bar, and type the adp URL
+xdotool search "Vimperator" \
+windowactivate --sync \
+key --clearmodifiers Escape Escape Escape ctrl+t ctrl+l \
+type --delay 100 "https://portal.adp.com/"
+
+# Press return in the address bar to go to adp
+xdotool key --clearmodifiers Return
+sleep 4
+
+# Log out of lastpass if being accessed remotely
+if [[ "${2}" == "remote" ]]
+then
+  xdotool key --clearmodifiers ctrl+alt+l
+  sleep 0.5
+fi
+
+# Click the login button
+xdotool key --clearmodifiers Tab Tab Return
+sleep 2
+
+# Press return on the password screen. Should be filled in from lastpass or filled in from remote clock in
+if [[ "${2}" == "remote" ]]
+then
+  xdotool type --clearmodifiers "$3"
+  xdotool key --clearmodifiers Tab
+  xdotool type --clearmodifiers "$4"
+fi
+
+xdotool key Return
+sleep 3
+
+# Mouse over the Time & Attendance tab
+xdotool mousemove --sync --clearmodifiers $timeAttendanceButtonX $timeAttendanceButtonY
+sleep 0.5
+
+# Click My Timecard
+xdotool mousemove --sync --clearmodifiers $timeAttendanceButtonX $timecardButtonY click 1
+sleep 3 
+
+# Move to and click the clockin/clockout button
+xdotool mousemove --sync --clearmodifiers $clockInOutButtonX $clockInOutButtonY #click 1
+sleep 2 
+
+# Move to and click the logout button
+xdotool mousemove --sync --clearmodifiers $logOutButtonX $logOutButtonY click 1
+sleep 0.5 
+
+# Press return on the logout prompt
+xdotool key --clearmodifiers Return
+
+
+if [[ "${1}" == "in" ]]
+then
+  # Log out of LastPass
+  xdotool key --clearmodifiers super+4
+
+  pidgin &
+  xchat &
+  #skype &
+
+  # Lock the screen
+  xdotool key --clearmodifiers ctrl+alt+Delete
+fi
+
+if [[ "${1}" == "out" ]]
+then
+  # Log out of LastPass
+  xdotool key --clearmodifiers ctrl+alt+l
+
+  killall pidgin
+  killall xchat
+  #killall skype
+  
+  # Lock the screen
+  xdotool key --clearmodifiers ctrl+alt+Delete
+fi

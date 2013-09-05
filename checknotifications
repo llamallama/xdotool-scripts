@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ $(pgrep skype | wc -l) -gt 0 ]]
+then
+  offset=-210
+else
+  offset=-180
+fi
+
+
+sleep .1
+xdotool mousemove --clearmodifiers --sync 9999 1 mousemove_relative -- $offset 0 click 1 mousemove restore
