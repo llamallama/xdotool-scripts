@@ -72,7 +72,7 @@ then
 fi
 
 xdotool key Return
-sleep 3
+sleep 7
 
 # Mouse over the Time & Attendance tab
 xdotool mousemove --sync --clearmodifiers $timeAttendanceButtonX $timeAttendanceButtonY
@@ -83,7 +83,7 @@ xdotool mousemove --sync --clearmodifiers $timeAttendanceButtonX $timecardButton
 sleep 3 
 
 # Move to and click the clockin/clockout button
-xdotool mousemove --sync --clearmodifiers $clockInOutButtonX $clockInOutButtonY #click 1
+xdotool mousemove --sync --clearmodifiers $clockInOutButtonX $clockInOutButtonY click 1
 sleep 2 
 
 # Move to and click the logout button
@@ -97,23 +97,32 @@ xdotool key --clearmodifiers Return
 if [[ "${1}" == "in" ]]
 then
   # Log out of LastPass
-  xdotool key --clearmodifiers super+4
+  xdotool key --clearmodifiers ctrl+alt+l
+  sleep 1
 
-  pidgin &
-  xchat &
+  # Go to workspace 4
+  #xdotool key --clearmodifiers super+4
+  #sleep .5
+
+  #pidgin &
+  #xchat &
   #skype &
 
-  # Lock the screen
-  xdotool key --clearmodifiers ctrl+alt+Delete
+  if [[ "${2}" == "remote" ]]
+  then
+    # Lock the screen
+    xdotool key --clearmodifiers ctrl+alt+Delete
+  fi
 fi
 
 if [[ "${1}" == "out" ]]
 then
   # Log out of LastPass
   xdotool key --clearmodifiers ctrl+alt+l
+  sleep 1
 
-  killall pidgin
-  killall xchat
+  #killall pidgin
+  #killall xchat
   #killall skype
   
   # Lock the screen
