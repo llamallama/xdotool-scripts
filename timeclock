@@ -58,8 +58,13 @@ punchClock() {
   xdotool key --clearmodifiers space
 }
 
+reactivateVimperator() {
+  xdotool key --clearmodifiers shift+Escape 
+}
+
 initialSetup
 activateFirefox
 openNewTab
 loginToPaylocity
 punchClock
+reactivateVimperator
