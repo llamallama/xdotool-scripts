@@ -43,7 +43,7 @@ openNewTab() {
   xdotool key --clearmodifiers alt+f
   sleep 0.2
   xdotool key --clearmodifiers t
-  sleep 0.2
+  sleep 0.5
 }
 
 loginToPaylocity() {
