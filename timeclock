@@ -40,10 +40,8 @@ activateFirefox() {
 }
 
 openNewTab() {
-  xdotool key --clearmodifiers shift+Escape 
-  sleep 0.1
   xdotool key --clearmodifiers alt+f
-  sleep 0.1
+  sleep 0.2
   xdotool key --clearmodifiers t
   sleep 0.2
 }
@@ -68,5 +66,5 @@ initialSetup
 activateFirefox
 openNewTab
 loginToPaylocity
-punchClock
+#punchClock
 reactivateVimperator
