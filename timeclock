@@ -66,5 +66,5 @@ initialSetup
 activateFirefox
 openNewTab
 loginToPaylocity
-#punchClock
+punchClock
 reactivateVimperator
